@@ -1,0 +1,326 @@
+% \documentclass[aps,secnumarabic,nobalancelastpage,amsmath,amssymb,
+% nofootinbib]{revtex4}
+
+\documentclass[aps,twocolumn,secnumarabic,nobalancelastpage,amsmath,amssymb,
+nofootinbib]{revtex4}
+
+\usepackage{graphics}      % standard graphics specifications
+\usepackage{graphicx}      % alternative graphics specifications
+\usepackage{longtable}     % helps with long table options
+\usepackage{url}           % for on-line citations
+\usepackage{bm}            % special 'bold-math' package
+
+
+\begin{document}
+\title{WKB Approximation in Two Dimensions}
+\author         {Daniel S. Landers}
+\email          {dans.landers@gmail.com}
+%\homepage       {http://web.mit.edu/fac/www}
+\affiliation    {SUNYPI Physics}
+\date{\today}
+
+\begin{abstract}
+(abstract)
+\end{abstract}
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Separation of Variables in 2D Cartesian Coordinates}
+In two dimensions (2D) the time independent Schr\"odinger equation becomes
+\begin{align}
+\nonumber
+-&\,\frac{\hbar^2}{2m}
+\left( \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}\right)
+\psi(x,y) + V(x,y)\psi(x,y)&&\\ = &\,E\psi(x,y),&&
+\label{eq:schro_2d}
+\end{align}
+%
+where $V(x,y)$ is a 2D potential. We'll assume that the solution is the
+product of separate functions in x and y:
+\begin{equation}
+\psi(x,y) = X(x)Y(y).
+\label{eq:psixy}
+\end{equation}
+%
+The 2D Schr\"odinger equation can be separated into two ordinary differential
+equations (ODE) if the potential can be written as a sum of x and y
+components:
+\begin{equation}
+V(x,y) = V_x(x) + V_y(y).
+\label{eq:Vxy}
+\end{equation}
+%
+Substituting these definitions from equations~(\ref{eq:psixy},\ref{eq:Vxy})
+into the 2D Schr\"odinger equation (\ref{eq:schro_2d}), we have
+\begin{align}
+\nonumber
+&-\frac{\hbar^2}{2m}
+\left( \frac{\partial^2}{\partial x^2}
++ \frac{\partial^2}{\partial y^2}\right)X(x)Y(y)&&\\
+&+ \left(V_x(x) + V_y(y)\right)X(x)Y(y) = EX(x)Y(y).&&
+\label{eq:schro_1}
+\end{align}
+%
+Then, distributing the derivatives and the separated potential results in
+\begin{align}
+\nonumber
+&\left[-\frac{\hbar^2}{2m}Y(y)\frac{d^2X(x)}{dx^2}+V_x(x)X(x)Y(y)\right]&&\\
+\nonumber
++ &\left[-\frac{\hbar^2}{2m}X(x)\frac{d^2Y(y)}{dy^2}+V_y(x)X(x)Y(y)\right]&&\\
+= & \,EX(x)Y(y).&&
+\label{eq:schro_2}
+\end{align}
+%
+And after dividing by $X(x)Y(y)$, we are left with
+\begin{align}
+\nonumber
+E=&\left[-\frac{\hbar^2}{2m}\frac{1}{X(x)}\frac{d^2X(x)}{dx^2}+V_x(x)\right]&&\\
++&\left[-\frac{\hbar^2}{2m}\frac{1}{Y(y)}\frac{d^2Y(y)}{dy^2}+V_y(x)\right].&&
+\label{eq:schro_3}
+\end{align}
+%
+The first term is a function of $x$ only, while the second term depends only
+on $y$. Also, $E$ is constant over $x$ and $y$. Therefore the first two terms
+are each a constant:
+\begin{subequations}
+\label{eq:schro_sep}
+\begin{equation}
+E_x = -\frac{\hbar^2}{2m}\frac{1}{X(x)}\frac{d^2X(x)}{dx^2}+V_x(x)
+\label{subeq:schro_sep_x}
+\end{equation}
+\begin{equation}
+E_y = -\frac{\hbar^2}{2m}\frac{1}{Y(y)}\frac{d^2Y(y)}{dy^2}+V_y(x)
+\label{subeq:schro_sep_y}
+\end{equation}
+\begin{equation}
+E=E_x+E_y
+\label{subeq:schro_sep_E}
+\end{equation}
+\end{subequations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Example 1: 2D Finite Barrier in an Infinite Square Well}
+We can imagine a 2D system, that has a finite barrier in both x and y as
+shown in figure <fig 1> as its potential. The total potential is the sum of
+the two:
+\begin{equation}
+V(x,y) = V_x(x) + V_y(y)
+\label{eq:potential_fin_barr}
+\end{equation}
+We'll start by finding the wavefunctions in the x-dimension.
+
+\subsection{$E<V_0$}
+When the total energy is less than the potential barrier the wavefunction
+is sinusiodal on either side. Within the barrier it exponentially decays
+approaching the center.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Region $\alpha$ $(-d_1 < x < 0)$}
+In region $alpha$, where $V=0$, the Schr\"odinger equation becomes
+\begin{equation}
+\frac{d^2}{dx^2}\psi(x) + \frac{2mE}{\hbar^2}\psi(x) = 0,
+\label{eq:schro_lt_V0_reg1}
+\end{equation}
+%
+and the general solution is
+\begin{subequations}
+\label{eq:sol_lt_V0_reg1}
+\begin{equation}
+\psi(x) = A e^{ikx} + A_0 e^{-ikx},
+\label{subeq:sol_lt_V0_reg1_a}
+\end{equation}
+\text{where}
+\begin{equation}
+k=\sqrt{2mE}/\hbar.
+\label{subeq:sol_lt_V0_reg1_b}
+\end{equation}
+\end{subequations}
+%
+However at $x=-d_1$, $|\psi(x)^2|=0$. Therefore,
+\begin{equation}
+A_0 = \frac{-A e^{ikd_1}}{e^{-ikd_1}} = -A e^{2ikd_1}.
+\label{eq:A0_defn}
+\end{equation}
+%
+Finally, the wavefunction in region $\alpha$ is
+\begin{equation}
+\psi_\alpha(x)=A[e^{ikx} - e^{2ikd_1}e^{-ikx}]
+\label{eq:psi_lt_V0_reg1}
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Region $\beta$ $(0 < x < d_2)$}
+In region $\beta$, $V(x)=V_0$ and the Schr\"odinger equation becomes
+\begin{equation}
+\frac{d^2}{dx^2}\psi(x) - \frac{2m}{\hbar^2}(V_0-E)\psi(x) = 0,
+\label{eq:schro_lt_V0_reg2}
+\end{equation}
+%
+and the general solution is
+\begin{subequations}
+\label{eq:sol_lt_V0_reg2}
+\begin{equation}
+\psi_\beta(x)=Be^{nx} + Ce^{-nx},
+\end{equation}
+\text{where}
+\begin{equation}
+n=\frac{\sqrt{2m(V_0-E)}}{\hbar}
+\end{equation}
+\end{subequations}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Region $\gamma$ $(d_2 < x < d_2+d_3)$}
+In region $\gamma$ where $V=0$, the general solution is the same as (\ref{eq:sol_lt_V0_reg1}), but we'll designate different constants:
+\begin{subequations}
+\label{eq:sol_lt_V0_reg3}
+\begin{equation}
+\psi_\gamma(x) = D e^{ikx} + D_0 e^{-ikx},
+\end{equation}
+\text{where again}
+\begin{equation}
+k=\sqrt{2mE}/\hbar.
+\end{equation}
+\end{subequations}
+%
+At the right boundary of the well, the wavefunction must be zero: $|\psi(d_2+d_3)|^2=0$. Thus
+\begin{equation}
+D_0 = -D \frac{e^{ik(d_2+d_3)}}{e^{-ik(d_2+d_3)}} = -D e^{2ik(d_2+d_3)},
+\label{eq:D0_defn}
+\end{equation}
+%
+and finally the wavefunction becomes
+\begin{equation}
+\psi_\gamma(x)=D[e^{ikx} - e^{2ik(d_2+d_3)} e^{-ikx}].
+\label{eq:psi_lt_V0_reg3}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Boundary Conditions Between Regions}
+Additional boundary conditions can be imposed between the three regions. This
+will lead to the eigenvalues and eventually, to solving for the constants.
+The wavefunction and its derivative must be continuous at the boundaries.
+
+Equating the the wavefunctions at the boundary of the $\alpha$ region and
+$\beta$ region:
+%\begin{equation}
+%\psi_\alpha(x)\rvert_{x=0} = \psi_\beta(x)\rvert_{x=0}
+%\end{equation}
+%
+\begin{equation}
+A[e^{ikx} - e^{2ikd_1}e^{-ikx}]\rvert_{x=0} = [Be^{nx} + Ce^{-nx}]\rvert_{x=0},
+\end{equation}
+thus
+\begin{equation}
+A[1 - e^{2ikd_1}] = B + C.
+\label{eq:alpha_beta_bound}
+\end{equation}
+%
+And equating the derivatives at the boundary:
+\begin{equation}
+A[ike^{ikx} + ike^{2ikd_1}e^{-ikx}]\rvert_{x=0} =
+[Bne^{nx} - Cne^{-nx}]\rvert_{x=0},
+\end{equation}
+therefore,
+\begin{equation}
+iAk[1 + e^{2ikd_1}] = Bn - Cn.
+\label{eq:d_alpha_beta_bound}
+\end{equation}
+%
+Equating the wavefunctions at the boundary of the $\beta$-region and the
+$\gamma$-region $(x=d_2)$, leads to
+\begin{equation}
+Be^{nd_2} + Ce^{-nd_2} = D[e^{ikd_2} - e^{2ik(d_2+d_3)} e^{-ikd_2}].
+\label{eq:beta_gamma_bound}
+\end{equation}
+%
+And by equating the derivatives between the $\beta$- and $\gamma$-regions,
+\begin{equation}
+Bne^{nd_2} - Cne^{-nd_2} = D[ike^{ikd_2} + ike^{2ik(d_2+d_3)} e^{-ikd_2}].
+\label{eq:d_beta_gamma_bound}
+\end{equation}
+%
+We can combine equations (\ref{eq:alpha_beta_bound},
+\ref{eq:d_alpha_beta_bound}, \ref{eq:beta_gamma_bound},
+\ref{eq:d_beta_gamma_bound}) into a matrix equation:
+\begin{subequations}
+\begin{equation}
+\nonumber
+\bf{M}\begin{pmatrix} A\\ B\\ C\\ D\\ \end{pmatrix} = 0\\
+\end{equation}
+\begin{equation}
+=\begin{pmatrix}
+1 - e^{2ikd_1}  &  -1  &  -1  &  0 \\
+ik[1 + e^{2ikd_1}]  &  -n  &  n  &  0 \\
+0  &  e^{nd_2}  &  e^{-nd_2}  &  e^{ikd_2} - f \\
+0  &  ne^{nd_2}  &  -ne^{-nd_2}  &  ik[e^{ikd_2} + f] \\
+\end{pmatrix}\begin{pmatrix} A\\ B\\ C\\ D\\ \end{pmatrix}
+\end{equation}
+\text{where}
+\begin{equation}
+\label{eq:f_term}
+f = e^{2ik(d_2+d_3)} e^{-ikd_2}.
+\end{equation}
+\end{subequations}
+%
+And then the Eigenvalues can be found from the following determinant:
+\begin{equation}
+\begin{vmatrix}
+1 - e^{2ikd_1}  &  -1  &  -1  &  0 \\
+ik[1 + e^{2ikd_1}]  &  -n  &  n  &  0 \\
+0  &  e^{nd_2}  &  e^{-nd_2}  &  e^{ikd_2} - f \\
+0  &  ne^{nd_2}  &  -ne^{-nd_2}  &  ik[e^{ikd_2} + f] \\
+\end{vmatrix} = 0.
+\end{equation}
+%
+Evaluating the determinant, and grouping like terms leaves us with
+\begin{align}
+\nonumber
+(1-e^{2ikd_1})\big[&-ikn(e^{nd_2}+e^{-nd_2})(e^{ikd_2} + f)&&\\
+\nonumber
+&+ n^2(e^{nd_2}-e^{-nd_2})(e^{ikd_2} - f)\big]&&\\
+\nonumber
++\,ik(1+e^{2ikd_1})\big[&ik(e^{-nd_2}-e^{nd_2})(e^{ikd_2} + f)&&\\
+\nonumber
+&+n(e^{nd_2}+e^{-nd_2})(e^{ikd_2} - f)\big]=0.&&\\
+\end{align}
+%
+After substituting in equation (\ref{eq:f_term}), and replacing some
+exponentials with trigonometric and hyperbolic functions, we have
+\begin{align}
+\nonumber
+\tan(kd_1)\big[&-2ikn(\cosh(nd_2))[e^{2ikd_2}+e^{2ik(d_2+d_3)}]&&\\
+\nonumber
+&+2n^2 \sinh(nd_2)[e^{2ikd_2}-e^{2ik(d_2+d_3)}]\big]&&\\
+\nonumber
++k\big[&-2ik\sinh(nd_2)[e^{2ikd_2}+e^{2ik(d_2+d_3)}]&&\\
+\nonumber
+&+2n\cosh(nd_2)[e^{2ikd_2}-e^{2ik(d_2+d_3)}]\big] = 0.&&\\
+\end{align}
+%
+By dividing by $e^{2ikd_2}$, and factoring out the $(1-e^{2ikd_3})$ and
+$i(1+e^{2ikd_3})$ terms:
+\begin{align}
+\nonumber
+i&(1+e^{2ikd_3})\big[2kn\cosh(nd_2)\tan(kd_1)+2k^2\sinh(nd_2)\big]&&\\
+\nonumber
+=\,&(1-e^{2ikd_3})\big[2n^2\sinh(nd_2)\tan(k_d1)+2nk\cosh(nd_2)\big].&&\\
+\end{align}
+%
+The quotient of the aforementioned terms is $\tan(kd_3)$, and we can divide
+by $\cosh(nd_2)$. Finally, the condition for eigenvalues when $E<V_0$ is
+\begin{align}
+\nonumber
+&kn\tan(kd_1)+k^2\tanh(nd_2)&&\\
+\nonumber
+=&\tan(kd_3)\big[n^2\tanh(nd_2)\tan(kd_1)+kn\big].&&\\
+\end{align}
+% \begin{align}
+% \nonumber
+% (1-e^{2ikd_1})[&-ikn(e^{nd_2}+e^{-nd_2})[e^{ikd_2} + e^{2ik(d_2+d_3)} e^{-ikd_2}]&&\\
+% \nonumber
+% &+ n^2(e^{nd_2}-e^{-nd_2})[e^{ikd_2} - e^{2ik(d_2+d_3)} e^{-ikd_2}]]&&\\
+% \nonumber
+% +ik(1+e^{2ik&d_1})[ik(e^{-nd_2}-e^{nd_2})[e^{ikd_2} + e^{2ik(d_2+d_3)} e^{-ikd_2}]&&\\
+% \nonumber
+% &+n(e^{nd_2}+e^{-nd_2})[e^{ikd_2} - e^{2ik(d_2+d_3)} e^{-ikd_2}]]&&\\
+% \end{align}
+
+\end{document}
