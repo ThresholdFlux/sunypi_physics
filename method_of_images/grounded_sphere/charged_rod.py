@@ -2,6 +2,20 @@ from math import pi, atan  # cos, sqrt, sin, tan
 
 import numpy as np
 
+from mayavi import mlab
+#
+# class MyApp(mayavi.scripts.mayavi2.MayaviApp):
+#
+from mayavi.sources.vtk_file_reader import VTKFileReader
+from mayavi.modules.outline import Outline
+from mayavi.modules.axes import Axes
+from mayavi.modules.grid_plane import GridPlane
+from mayavi.modules.image_plane_widget import ImagePlaneWidget
+from mayavi.modules.text import Text
+from mayavi.modules.contour_grid_plane import ContourGridPlane
+from mayavi.modules.iso_surface import IsoSurface
+
+
 
 def spherical_to_cartesian(radial, azimuthal, polar):
     x = radial * np.cos(azimuthal) * np.sin(polar)
@@ -28,16 +42,18 @@ if __name__ == '__main__':
     charge_density_Cpm = -1e-6
 
     n_field_pts_radial = 8
-    n_field_pts_theta = 12
+    n_field_pts_theta = 36
     n_field_pts_phi = 36
     n_source_pts_theta = 32
 
-    radial_max = 0.99 * dist_to_rod
-    radial_min = 1.01 * radius_sphere
+    radial_max = 0.9 * dist_to_rod
+    radial_min = 1.1 * radius_sphere
+
+    dot_scale = 0.8 * (radial_max - radial_min) / n_field_pts_radial
 
     radial_field_pts = np.linspace(radial_min, radial_max, n_field_pts_radial)
-    theta_field_pts = np.linspace(0.0, 5*pi/16, n_field_pts_theta)
-    phi_field_pts = np.linspace(-4*pi/8, 4*pi/8, n_field_pts_phi)
+    theta_field_pts = np.linspace(0.0, 7*pi/16, n_field_pts_theta)
+    phi_field_pts = np.linspace(0, 4*pi/8, n_field_pts_phi)
 
 
     # potential_array = np.zeros((n_field_pts_radial, n_field_pts_theta, n_field_pts_phi), dtype=float)
@@ -49,7 +65,7 @@ if __name__ == '__main__':
 
     # Do we want matrix or cartesian indexing? Lets go with cartesian...
     mesh_radial_f, mesh_theta_f, mesh_phi_f, mesh_theta_s = np.meshgrid(radial_field_pts, theta_field_pts,
-                                                                        phi_field_pts, theta_source)
+                                                                        phi_field_pts, theta_source, indexing='xy')
 
     def integrand1(rad_f, thet_f, phi_f, thet_s, rad_sph, dist_rod):
         return 1.0 \
@@ -72,6 +88,21 @@ if __name__ == '__main__':
                    x=theta_source, axis=3)
 
     potential_V = mesh_potential_V.flatten('F')
+    # r_len = len(radial_field_pts)
+    # t_len = len(theta_field_pts)
+    # p_len = len(phi_field_pts)
+    # ctr= 0
+    # for k in range(p_len):
+    #     for i in range(r_len):
+    #         for j in range(t_len):
+    #
+    #             idx = j + i*t_len + k*t_len*r_len
+    #
+    #             print('flat: {}, mesh: {}'.format(potential_V[idx], mesh_potential_V[j, i, k]))
+    #
+    #             if potential_V[ctr] != mesh_potential_V[j, i, k]:
+    #                 print('nooooooooo')
+    #             ctr += 1
 
     min_max_potential_V = (min(potential_V), max(potential_V))
 
@@ -89,13 +120,31 @@ if __name__ == '__main__':
     c_norm = colors.Normalize(vmin=min_max_potential_V[0], vmax=min_max_potential_V[1])
     scalar_map = cmx.ScalarMappable(norm=c_norm, cmap=jet)
     color_arr = scalar_map.to_rgba(potential_V)
+    color_arr.tolist()
+    color_arr = [tuple(rgb[:3]) for rgb in color_arr]
 
-    fig = plt.figure()
-    ax = Axes3D(fig)
+    fig = mlab.figure()
 
-    ax.scatter(xs=x, ys=y, zs=z, c=color_arr)
-    plt.show()
 
+
+    # fig = plt.figure()
+    # ax = Axes3D(fig)
+    #
+    # ax.scatter(xs=x, ys=y, zs=z, c=color_arr)
+    # plt.show()
+
+
+    x_plane = GridPlane()
+    y_plane = GridPlane()
+    z_plane = GridPlane()
+    x_plane.grid_plane.axis = 'x'
+    y_plane.grid_plane.axis = 'y'
+    z_plane.grid_plane.axis = 'z'
+    glyphs_V = mlab.points3d(x, y, z, potential_V, scale_mode='none', scale_factor=dot_scale)
+    fig.add_(glyphs_V)
+    fig.add_child(x_plane)
+    fig.add_child(y_plane)
+    fig.add_child(z_plane)
     print('whoaaa')
 
 # see ImagSphereEmagVert6.m
