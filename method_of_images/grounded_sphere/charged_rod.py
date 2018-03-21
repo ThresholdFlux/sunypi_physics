@@ -1,19 +1,26 @@
 from math import pi, atan  # cos, sqrt, sin, tan
 
 import numpy as np
-
+from numpy import array
 from mayavi import mlab
+
+try:
+    from mayavi import engine
+except ImportError:
+    from mayavi.api import Engine
+    engine = Engine()
+    engine.start()
 #
 # class MyApp(mayavi.scripts.mayavi2.MayaviApp):
 #
-from mayavi.sources.vtk_file_reader import VTKFileReader
-from mayavi.modules.outline import Outline
-from mayavi.modules.axes import Axes
-from mayavi.modules.grid_plane import GridPlane
-from mayavi.modules.image_plane_widget import ImagePlaneWidget
-from mayavi.modules.text import Text
-from mayavi.modules.contour_grid_plane import ContourGridPlane
-from mayavi.modules.iso_surface import IsoSurface
+# from mayavi.sources.vtk_file_reader import VTKFileReader
+# from mayavi.modules.outline import Outline
+# from mayavi.modules.axes import Axes
+# from mayavi.modules.grid_plane import GridPlane
+# from mayavi.modules.image_plane_widget import ImagePlaneWidget
+# from mayavi.modules.text import Text
+# from mayavi.modules.contour_grid_plane import ContourGridPlane
+# from mayavi.modules.iso_surface import IsoSurface
 
 
 
@@ -123,8 +130,8 @@ if __name__ == '__main__':
     color_arr.tolist()
     color_arr = [tuple(rgb[:3]) for rgb in color_arr]
 
-    fig = mlab.figure()
 
+    # fig = mlab.figure()
 
 
     # fig = plt.figure()
@@ -133,18 +140,46 @@ if __name__ == '__main__':
     # ax.scatter(xs=x, ys=y, zs=z, c=color_arr)
     # plt.show()
 
+    # contour_V = mlab.contour3d(mesh_x, mesh_y, mesh_z, mesh_potential_V)
+    x, y, z = np.ogrid[-10:10:20j, -10:10:20j, -10:10:20j]
+    s = np.sin(x * y * z) / (x * y * z)
+    contour_V = mlab.contour3d(s)
 
-    x_plane = GridPlane()
-    y_plane = GridPlane()
-    z_plane = GridPlane()
-    x_plane.grid_plane.axis = 'x'
-    y_plane.grid_plane.axis = 'y'
-    z_plane.grid_plane.axis = 'z'
-    glyphs_V = mlab.points3d(x, y, z, potential_V, scale_mode='none', scale_factor=dot_scale)
-    fig.add_(glyphs_V)
-    fig.add_child(x_plane)
-    fig.add_child(y_plane)
-    fig.add_child(z_plane)
+    # glyphs_V = mlab.points3d(x, y, z, potential_V, scale_mode='none', scale_factor=dot_scale)
+    # mlab.axes()
+    # mlab.title('Electric Potential')
+    # mlab.colorbar()
+
+
+
+    # x_plane = GridPlane()
+    # y_plane = GridPlane()
+    # z_plane = GridPlane()
+    # x_plane.grid_plane.axis = 'x'
+    # y_plane.grid_plane.axis = 'y'
+    # z_plane.grid_plane.axis = 'z'
+    #
+    # if len(engine.scenes) == 0:
+    #     engine.new_scene()
+    # module_manager = engine.scenes[0].children[0].children[0]
+    # module_manager.scalar_lut_manager.scalar_bar.height = 0.8000000000000006
+    # module_manager.scalar_lut_manager.scalar_bar.position = array([0.85132568, 0.11616402])
+    # module_manager.scalar_lut_manager.scalar_bar.position2 = array([0.11780793, 0.8])
+    # module_manager.scalar_lut_manager.scalar_bar.width = 0.11780793319415472
+    # module_manager.scalar_lut_manager.scalar_bar.title = 'Volts (V)'
+    # module_manager.scalar_lut_manager.scalar_bar.orientation = 'vertical'
+    # module_manager.scalar_lut_manager.scalar_bar_representation.position = array([0.85132568, 0.11616402])
+    # module_manager.scalar_lut_manager.scalar_bar_representation.position2 = array([0.11780793, 0.8])
+
+    # mlab.pipeline.volume(mlab.pipeline.scalar_field(mesh_potential_V))
+
+
+    # fig.add_(glyphs_V)
+    # fig.add_child(x_plane)
+    # fig.add_child(y_plane)
+    # fig.add_child(z_plane)
     print('whoaaa')
+
+
 
 # see ImagSphereEmagVert6.m
