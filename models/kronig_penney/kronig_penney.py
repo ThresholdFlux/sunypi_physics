@@ -54,7 +54,8 @@ def compute_eigenvalue_negative(well_depth, len_a_m, len_b_m, start, stop, num, 
                + (cosh(len_b_m * k(energy)) * cos(len_a_m * q(energy))) \
                - cos(phase_const * (len_a_m + len_b_m))
 
-    return eigenvalue_eq_n, find_roots(func=eigenvalue_eq_n, start=start, stop=stop, num=num)
+    roots = find_roots(func=eigenvalue_eq_n, start=start, stop=stop, num=num)
+    return roots, eigenvalue_eq_n
 
 
 def compute_eigenvalue_positive(well_depth, len_a_m, len_b_m, start, stop, num, propagation_const, num_periods):
@@ -74,8 +75,8 @@ def compute_eigenvalue_positive(well_depth, len_a_m, len_b_m, start, stop, num, 
                * sin(len_b_m * u(energy)) * sin(len_a_m * w(energy)) \
                + cos(len_b_m * u(energy)) * cos(len_a_m * w(energy)) \
                - cos(phase_const * (len_a_m + len_b_m))
-
-    return eigenvalue_eq_p, find_roots(func=eigenvalue_eq_p, start=start, stop=stop, num=num)
+    roots = find_roots(func=eigenvalue_eq_p, start=start, stop=stop, num=num)
+    return roots, eigenvalue_eq_p
 
 
 def find_zero_eigenvalue_depth(len_a_m, len_b_m, start, stop, num, propagation_const, num_periods):
@@ -90,8 +91,8 @@ def find_zero_eigenvalue_depth(len_a_m, len_b_m, start, stop, num, propagation_c
         return cos(len_a_m * wave_num_l(energy))\
                - len_b_m * wave_num_l(energy)/2 * sin(len_a_m * wave_num_l(energy)) \
                - cos(phase_const * (len_a_m + len_b_m))
-
-    return zero_eigenvalue_eq, find_roots(func=zero_eigenvalue_eq, start=start, stop=stop, num=num)
+    roots = find_roots(func=zero_eigenvalue_eq, start=start, stop=stop, num=num)
+    return roots, zero_eigenvalue_eq
 
 
 def normalize_neg_eigenvals(energy, well_depth, len_a_m, len_b_m, propagation_const, num_periods):
@@ -108,11 +109,11 @@ def normalize_neg_eigenvals(energy, well_depth, len_a_m, len_b_m, propagation_co
         [exp(-b * k + ikab),      exp(b * k + ikab),     -exp(1j * a * q),          -exp(-1j * a * q)],
         [k * exp(-b * k + ikab), -k * exp(b * k + ikab), -1j * q * exp(1j * a * q),  1j * q * exp(-1j * a * q)]])
 
-
     x = nullspace(A=m_mat, rtol=1.0e-12)
 
     print(x)
     return x
+
 
 def plot_wavefunction_neg(energy, well_depth, len_a_m, len_b_m, x):
     k = compute_wavenumber(energy=energy, potential=0.0, total_gt_potential=False)
@@ -129,6 +130,7 @@ def plot_wavefunction_neg(energy, well_depth, len_a_m, len_b_m, x):
     plt.plot(x, func.real)
     plt.show()
     input('whoaaaaaaaaa')
+
 
 if __name__ == '__main__':
     logging.basicConfig(format='%(levelname)s: %(asctime)s \n    %(message)s', level=logging.INFO)
@@ -148,7 +150,7 @@ if __name__ == '__main__':
     # n: Propagation constant, which determines phase of wavefunction
     propagation_const = 3
 
-    eigenvalue_eq_n, roots_n = compute_eigenvalue_negative(
+    roots_n, eigenvalue_eq_n = compute_eigenvalue_negative(
         well_depth=depth_J, len_a_m=len_a_m, len_b_m=len_b_m, start=-0.9999999*depth_J, stop=-0.0000001*depth_J,
         num=1000000, propagation_const=propagation_const, num_periods=num_periods)
 
@@ -159,10 +161,10 @@ if __name__ == '__main__':
 
     plot_wavefunction_neg(energy=eig_n, well_depth=depth_J, len_a_m=len_a_m, len_b_m=len_b_m, x=x)
 
-    zero_eigenvalue_eq, roots_0 = find_zero_eigenvalue_depth(
+    roots_0, zero_eigenvalue_eq = find_zero_eigenvalue_depth(
         len_a_m=len_a_m, len_b_m=len_b_m, start=0.75*depth_J, stop=1.25*depth_J, num=1000000,
         propagation_const=propagation_const, num_periods=num_periods)
-    eigenvalue_eq_p, roots_p = compute_eigenvalue_positive(
+    roots_p, eigenvalue_eq_p = compute_eigenvalue_positive(
         well_depth=depth_J, len_a_m=len_a_m, len_b_m=len_b_m, start=0.0001*depth_J, stop=2.0*depth_J,
         num=2000000, propagation_const=propagation_const, num_periods=num_periods)
 

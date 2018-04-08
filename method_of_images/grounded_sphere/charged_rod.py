@@ -1,8 +1,9 @@
 from math import pi, atan  # cos, sqrt, sin, tan
 
 import numpy as np
-from numpy import array
 from mayavi import mlab
+
+from utilities.coordinate_utilities import spherical_to_cartesian, cartesian_to_spherical
 
 try:
     from mayavi import engine
@@ -10,33 +11,6 @@ except ImportError:
     from mayavi.api import Engine
     engine = Engine()
     engine.start()
-#
-# class MyApp(mayavi.scripts.mayavi2.MayaviApp):
-#
-# from mayavi.sources.vtk_file_reader import VTKFileReader
-# from mayavi.modules.outline import Outline
-# from mayavi.modules.axes import Axes
-# from mayavi.modules.grid_plane import GridPlane
-# from mayavi.modules.image_plane_widget import ImagePlaneWidget
-# from mayavi.modules.text import Text
-# from mayavi.modules.contour_grid_plane import ContourGridPlane
-# from mayavi.modules.iso_surface import IsoSurface
-
-
-
-def spherical_to_cartesian(radial, azimuthal, polar):
-    x = radial * np.cos(azimuthal) * np.sin(polar)
-    y = radial * np.sin(azimuthal) * np.sin(polar)
-    z = radial * np.cos(polar)
-    return x, y, z
-
-
-def cartesian_to_spherical(x, y, z):
-    radial = np.sqrt(x**2 + y**2 + z**2)
-    azimuthal = np.arctan2(x1=y, x2=x)
-    polar = np.arccos(z / radial)
-    return radial, azimuthal, polar
-
 
 if __name__ == '__main__':
     radius_sphere = 1.0
@@ -121,7 +95,6 @@ if __name__ == '__main__':
     from matplotlib import pyplot as plt
     import matplotlib.colors as colors
     import matplotlib.cm as cmx
-    from mpl_toolkits.mplot3d import Axes3D
 
     jet = plt.get_cmap('jet')
     c_norm = colors.Normalize(vmin=min_max_potential_V[0], vmax=min_max_potential_V[1])
@@ -134,23 +107,14 @@ if __name__ == '__main__':
     # fig = mlab.figure()
 
 
-    # fig = plt.figure()
-    # ax = Axes3D(fig)
-    #
-    # ax.scatter(xs=x, ys=y, zs=z, c=color_arr)
-    # plt.show()
-
-    # contour_V = mlab.contour3d(mesh_x, mesh_y, mesh_z, mesh_potential_V)
-    x, y, z = np.ogrid[-10:10:20j, -10:10:20j, -10:10:20j]
-    s = np.sin(x * y * z) / (x * y * z)
-    contour_V = mlab.contour3d(s)
+    contour_V = mlab.contour3d(mesh_x, mesh_y, mesh_z, mesh_potential_V)
 
     # glyphs_V = mlab.points3d(x, y, z, potential_V, scale_mode='none', scale_factor=dot_scale)
-    # mlab.axes()
-    # mlab.title('Electric Potential')
-    # mlab.colorbar()
+    mlab.axes()
+    mlab.title('Electric Potential')
+    mlab.colorbar()
 
-
+    mlab.show()
 
     # x_plane = GridPlane()
     # y_plane = GridPlane()
@@ -178,8 +142,6 @@ if __name__ == '__main__':
     # fig.add_child(x_plane)
     # fig.add_child(y_plane)
     # fig.add_child(z_plane)
-    print('whoaaa')
-
 
 
 # see ImagSphereEmagVert6.m
